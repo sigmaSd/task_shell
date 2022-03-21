@@ -11,13 +11,13 @@ await bolt.init();
 const taskShellLib = Deno.dlopen(bolt.getLib("task_shell_wrap"), {
   "execute": {
     parameters: ["pointer", "usize"],
-    result: "void",
+    result: "i32",
     nonblocking: true,
   },
 });
 
-export async function execute(script: string) {
-  await taskShellLib.symbols.execute(
+export async function execute(script: string): Promise<number> {
+  return await taskShellLib.symbols.execute(
     new TextEncoder().encode(script),
     script.length,
   );
